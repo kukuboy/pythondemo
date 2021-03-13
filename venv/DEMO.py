@@ -42,13 +42,30 @@
 # for i in range(1, 15, 3):
 #     print(i)
 
-arr = ["aa", "bb"]
-for i in range(len(arr)):
-    print(arr[i])
+# arr = ["aa", "bb"]
+# for i in range(len(arr)):
+#     print(arr[i])
+#
+# i = 0
+# while i < len(arr):
+#     print(arr[i])
+#     i += 1
+# else:
+#     print(i)
 
-i = 0
-while i < len(arr):
-    print(arr[i])
-    i += 1
-else:
-    print(i)
+# word1 = '这是一个句子'
+# word2 = "这又是一个句子"
+# word3 = """
+#        这是好几个句子
+# 这个是好几个句子
+# """
+# print(word1, word2, word3)
+
+# my_str = "i'm a string"
+# print(my_str[0:7:2])  # [起始位置：结束位置：步进值]
+# print(my_str[0::2])
+# print(my_str[::2])
+
+
+print("hello\tworld")
+print(r"hello\tworld")
