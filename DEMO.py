@@ -124,15 +124,45 @@ print(type(tup1),type(tup2),type(tup3))
 # c,d = math(a,b)
 # print("%d和%d的商是：%d,积是：%d"%(a,b,c,d))
 
-a = 100
-def change():
-     a=300
+# a = 100
+# def change():
+#      a=300
+#
+#
+# def change1():
+#     global a
+#     a = 400
+# change1()
+# change()
+# print(a)
 
+# f = open("text.txt", "w+")
+# f.write("hello world:1\n")
+# f.write("hello world:2\n")
+# f.write("hello world:3\n")
+# f.write("hello world:4\n")
+# f.write("hello world:5\n")
+# f.close()
+# f = open("text.txt", "r")
+# print(f.read(5))
+# print(f.read(5))
+# print(f.readline())
+# print(f.readline())
+# print(f.readlines())
+# f.close()
 
-def change1():
-    global a
-    a = 400
-change1()
-change()
-print(a)
+# import os
+#
+# # os.rename("text.txt", "aText.text")
+# os.rename("aText.text", "text.txt")
 
+try:
+    print("------------1-----------")
+    f = open("123.txt", "r")
+    print("------------2-----------")
+# except Exception as result: #所有异常
+except (IOError, NameError) as result:
+    print("产生错误了", result)
+    pass
+finally:
+    print("这句还是会执行")
