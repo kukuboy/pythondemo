@@ -27,7 +27,7 @@ def main():
                 item["title"] = x.find(class_="hd").a.get_text()
                 item["introduction"] = x.find(class_="bd").p.get_text()
                 item["rateNum"] = x.find(class_="rating_num").get_text()
-                item["evaluation"] = x.find(class_="star").get_text()
+                item["evaluation"] = x.find(class_="star").find(class_=False, content=False).get_text()
                 item["tip"] = x.find(class_="inq").get_text()
                 movieTop250.append(item)
                 print(item["title"])
