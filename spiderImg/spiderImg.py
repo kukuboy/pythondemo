@@ -16,7 +16,8 @@ import time
 
 def main():
     img = []
-    for i in range(1, 100):
+    for i in range(50, 100):
+        print("开始爬取第%d页-----------------"%i)
         baseurl = "https://www.mzitu.com/page/" + str(i) + "/"
         dataList = getData(baseurl)
         bs = BeautifulSoup(dataList, "html.parser")
@@ -25,9 +26,10 @@ def main():
             try:
                 item = dict()
                 item["href"] = x.a["href"]
-                item["imgSrc"] = x.a.img["src"]
+                item["imgSrc"] = x.a.img["data-original"]
                 item["title"] = x.span.a.get_text()
                 item["time"] = x.find(class_="time").get_text()
+                print("正在爬取---------------------")
                 img.append(item)
             except Exception as error:
                 print(error)
@@ -53,6 +55,7 @@ def getData(url):
 def saveData(data, name):
     # 保存到文件
     try:
+        print("---------------正在保存到json")
         f = open("./" + name + ".json", "w", encoding="utf-8")
         try:
             val = dict()
@@ -66,8 +69,9 @@ def saveData(data, name):
         print("保存到文件出错，原因为：", error)
     # 保存到excel
     try:
+        print("--------------正在保存到excel")
+        workBook = xlwt.Workbook(encoding="utf-8")
         try:
-            workBook = xlwt.Workbook(encoding="utf-8")
             workSheet = workBook.add_sheet(name, cell_overwrite_ok=True)
             col = ["详情地址", "图片地址", "图片标题", "图片时间"]
             for i in range(0, 4):
@@ -85,6 +89,7 @@ def saveData(data, name):
         print("保存到excel出错，原因为：", error)
     # 保存到mysql
     try:
+        print("--------------正在保存到数据库")
         conn = mysql.connector.connect(
             host='182.92.207.81',
             user='root',
