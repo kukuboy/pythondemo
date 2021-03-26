@@ -16,8 +16,8 @@ import time
 
 def main():
     img = []
-    for i in range(50, 100):
-        print("开始爬取第%d页-----------------"%i)
+    for i in range(1, 50):
+        print("开始爬取第%d页-----------------" % i)
         baseurl = "https://www.mzitu.com/page/" + str(i) + "/"
         dataList = getData(baseurl)
         bs = BeautifulSoup(dataList, "html.parser")
@@ -87,6 +87,21 @@ def saveData(data, name):
             workBook.save("./" + name + ".xls")
     except Exception as error:
         print("保存到excel出错，原因为：", error)
+    # 保存到文件
+    try:
+        print("---------------正在保存到文件")
+        header = {"Authorization": "Bearer fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda"}  # 设置http header
+        i = 0
+        for item in data:
+            print("--------------正在第%d个图片"%i)
+            rep = urllib.request.Request(item["imgSrc"], headers=header)
+            response = urllib.request.urlopen(rep)
+            if response.getcode() == 200:
+                with open("./" + name + "/" + str(i) + ".jpg", "wb") as f:
+                    f.write(response.read())  # 将内容写入图片
+            i += 1
+    except Exception as error:
+        print("保存到文件出错，原因为：", error)
     # 保存到mysql
     try:
         print("--------------正在保存到数据库")
@@ -104,7 +119,8 @@ def saveData(data, name):
                 cur.execute("select * from img where href = %s", (i["href"],))
                 result = cur.fetchall()
                 if len(result) == 0:
-                    s = cur.execute("insert into img (title, href, imgSrc, time) values (%s, %s, %s, %s)", (i["title"], i["href"], i["imgSrc"], i["time"]))
+                    s = cur.execute("insert into img (title, href, imgSrc, time) values (%s, %s, %s, %s)",
+                                    (i["title"], i["href"], i["imgSrc"], i["time"]))
             cur.close()  # 关闭游标
         finally:
             conn.commit()
