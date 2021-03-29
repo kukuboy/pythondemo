@@ -46,7 +46,7 @@ def getData(url):
     }
     req = urllib.request.Request(url=url, headers=headers)
     try:
-        response = urllib.request.urlopen(req)
+        response = urllib.request.urlopen(req, timeout=10)
         data = response.read().decode("utf-8")
     except Exception as e:
         if hasattr(e, "reason"):
@@ -114,7 +114,7 @@ def saveData(data, name):
             for item in items["imgSrc"]:
                 print("--------------正在第%d个图片%s" % (i, item))
                 rep = urllib.request.Request(item, headers=header)
-                response = urllib.request.urlopen(rep)
+                response = urllib.request.urlopen(rep, timeout=10)
                 if response.getcode() == 200:
                     with open("./" + name + "/" + str(i) + ".jpg", "wb") as f:
                         f.write(response.read())  # 将内容写入图片
