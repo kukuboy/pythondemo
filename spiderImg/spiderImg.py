@@ -26,7 +26,9 @@ def main():
             try:
                 item = dict()
                 item["href"] = x.a["href"]
-                item["imgSrc"] = x.a.img["data-original"]
+                item["imgSrc"] = []
+                item["imgSrc"].append(x.a.img["data-original"])
+                getImgArray(item["href"], item["href"], item["imgSrc"])
                 item["title"] = x.span.a.get_text()
                 item["time"] = x.find(class_="time").get_text()
                 print("正在爬取---------------------")
@@ -52,8 +54,23 @@ def getData(url):
     return data
 
 
+def getImgArray(href, source, data):
+    print("寻找%s的子链接--------%d" % (source, len(data)))
+    try:
+        if not source:
+            source = href
+        dataList = getData(href)
+        bs = BeautifulSoup(dataList, "html.parser")
+        needBody = bs.find("div", class_="main-image").p.a
+        data.append(needBody.img["src"])
+        if source in needBody["href"]:
+            getImgArray(needBody["href"], source, data)
+    except Exception as error:
+        print("获取系列图片出错，原因为：", error, href)
+
+
 def saveData(data, name):
-    # 保存到文件
+    # 保存到json
     try:
         print("---------------正在保存到json")
         f = open("./" + name + ".json", "w", encoding="utf-8")
@@ -90,16 +107,18 @@ def saveData(data, name):
     # 保存到文件
     try:
         print("---------------正在保存到文件")
-        header = {"Authorization": "Bearer fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda"}  # 设置http header
+        header = {"Authorization": "Bearer fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda",
+                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36"}  # 设置http header
         i = 0
-        for item in data:
-            print("--------------正在第%d个图片"%i)
-            rep = urllib.request.Request(item["imgSrc"], headers=header)
-            response = urllib.request.urlopen(rep)
-            if response.getcode() == 200:
-                with open("./" + name + "/" + str(i) + ".jpg", "wb") as f:
-                    f.write(response.read())  # 将内容写入图片
-            i += 1
+        for items in data:
+            for item in items["imgSrc"]:
+                print("--------------正在第%d个图片%s" % (i, item))
+                rep = urllib.request.Request(item, headers=header)
+                response = urllib.request.urlopen(rep)
+                if response.getcode() == 200:
+                    with open("./" + name + "/" + str(i) + ".jpg", "wb") as f:
+                        f.write(response.read())  # 将内容写入图片
+                i += 1
     except Exception as error:
         print("保存到文件出错，原因为：", error)
     # 保存到mysql
@@ -120,7 +139,7 @@ def saveData(data, name):
                 result = cur.fetchall()
                 if len(result) == 0:
                     s = cur.execute("insert into img (title, href, imgSrc, time) values (%s, %s, %s, %s)",
-                                    (i["title"], i["href"], i["imgSrc"], i["time"]))
+                                    (i["title"], i["href"], json.dumps(i["imgSrc"]), i["time"]))
             cur.close()  # 关闭游标
         finally:
             conn.commit()
