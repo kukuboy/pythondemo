@@ -138,8 +138,11 @@ def saveData(data, name):
                 cur.execute("select * from img where href = %s", (i["href"],))
                 result = cur.fetchall()
                 if len(result) == 0:
-                    s = cur.execute("insert into img (title, href, imgSrc, time) values (%s, %s, %s, %s)",
-                                    (i["title"], i["href"], json.dumps(i["imgSrc"]), i["time"]))
+                    cur.execute("insert into img (title, href, imgSrc, time) values (%s, %s, %s, %s)",
+                                (i["title"], i["href"], json.dumps(i["imgSrc"]), i["time"]))
+                else:
+                    cur.execute("update img set imgSrc = %s where href = %s",
+                                (json.dumps(i["imgSrc"]), i["href"]))
             cur.close()  # 关闭游标
         finally:
             conn.commit()
