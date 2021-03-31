@@ -16,25 +16,28 @@ import time
 
 def main():
     img = []
-    for i in range(1, 50):
-        print("开始爬取第%d页-----------------" % i)
-        baseurl = "https://www.mzitu.com/page/" + str(i) + "/"
-        dataList = getData(baseurl)
-        bs = BeautifulSoup(dataList, "html.parser")
-        needBody = bs.find("ul", id="pins").find_all("li")
-        for x in needBody:
-            try:
-                item = dict()
-                item["href"] = x.a["href"]
-                item["imgSrc"] = []
-                item["imgSrc"].append(x.a.img["data-original"])
-                getImgArray(item["href"], item["href"], item["imgSrc"])
-                item["title"] = x.span.a.get_text()
-                item["time"] = x.find(class_="time").get_text()
-                print("正在爬取---------------------")
-                img.append(item)
-            except Exception as error:
-                print(error)
+    for i in range(1, 2):
+        try:
+            print("--------------------开始爬取第%d页-----------------" % i)
+            baseurl = "https://www.mzitu.com/page/" + str(i) + "/"
+            dataList = getData(baseurl)
+            bs = BeautifulSoup(dataList, "html.parser")
+            needBody = bs.find("ul", id="pins").find_all("li")
+            for x in needBody:
+                try:
+                    item = dict()
+                    item["href"] = x.a["href"]
+                    item["imgSrc"] = []
+                    item["imgSrc"].append(x.a.img["data-original"])
+                    getImgArray(item["href"], item["href"], item["imgSrc"])
+                    item["title"] = x.span.a.get_text()
+                    item["time"] = x.find(class_="time").get_text()
+                    print("正在爬取---------------------")
+                    img.append(item)
+                except Exception as error:
+                    print(error)
+        except Exception as error:
+            print(error)
     saveName = "图片地址"
     saveData(img, saveName)
 
@@ -97,7 +100,10 @@ def saveData(data, name):
             for item in data:
                 y = 0
                 for val in item.values():
-                    workSheet.write(x, y, val)
+                    if y == 1:
+                        workSheet.write(x, y, json.dumps(val))
+                    else:
+                        workSheet.write(x, y, val)
                     y += 1
                 x += 1
         finally:
