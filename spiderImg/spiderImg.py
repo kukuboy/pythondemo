@@ -9,6 +9,7 @@ import xlwt  # 进行excel操作
 import mysql.connector  # 进行数据库操作
 import json
 import time
+import os
 
 
 # findImgSrc = re.compile(r'<img.*src="(.*?)"', re.S) # re.S让.包含换行符
@@ -111,22 +112,25 @@ def saveData(data, name):
     except Exception as error:
         print("保存到excel出错，原因为：", error)
     # 保存到文件
-    try:
-        print("---------------正在保存到文件")
-        header = {"Authorization": "Bearer fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda",
-                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36"}  # 设置http header
-        i = 0
-        for items in data:
+
+    print("---------------正在保存到文件")
+    header = {"Authorization": "Bearer fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda",
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36"}  # 设置http header
+    for items in data:
+        i = 1
+        try:
             for item in items["imgSrc"]:
+
                 print("--------------正在第%d个图片%s" % (i, item))
                 rep = urllib.request.Request(item, headers=header)
                 response = urllib.request.urlopen(rep, timeout=10)
                 if response.getcode() == 200:
-                    with open("./" + name + "/" + str(i) + ".jpg", "wb") as f:
+                    os.makedirs("./" + name + "/" + items["title"], exist_ok=True)
+                    with open("./" + name + "/" + items["title"] + "/" + str(i) + ".jpg", "wb+") as f:
                         f.write(response.read())  # 将内容写入图片
                 i += 1
-    except Exception as error:
-        print("保存到文件出错，原因为：", error)
+        except Exception as error:
+            print("保存到文件出错，原因为：", error)
     # 保存到mysql
     try:
         print("--------------正在保存到数据库")
