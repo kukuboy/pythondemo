@@ -83,6 +83,14 @@ def saveData(data, name):
             val["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
             val["author"] = "水印红枫"
             val["data"] = data
+            # ensure_ascii=True：默认输出ASCLL码，如果把这个该成False,就可以输出中文。
+            # indent:参数根据数据格式缩进显示，读起来更加清晰。
+            # skipkeys：默认值是False，如果dict的keys内的数据不是python的基本类型(str,unicode,int,long,float,bool,None)，设置为False时，就会报TypeError的错误。此时设置成True，则会跳过这类key 。
+            # sort_keys = True:是告诉编码器按照字典排序(a到z)输出。如果是字典类型的python对象，就把关键字按照字典排序。
+            # separators: 是分隔符的意思，参数意思分别为不同dict项之间的分隔符和dict项内key和value之间的分隔符，把：和，后面的空格都除去了。
+            # check_circular：如果check_circular为false，则跳过对容器类型的循环引用检查，循环引用将导致溢出错误(或更糟的情况)。
+            # allow_nan：如果allow_nan为假，则ValueError将序列化超出范围的浮点值(nan、inf、-inf)，严格遵守JSON规范，而不是使用JavaScript等价值(nan、Infinity、-Infinity)。
+            # default：default(obj) 是一个函数，它应该返回一个可序列化的obj版本或引发类型错误。默认值只会引发类型错误。
             f.write(json.dumps(val, ensure_ascii=False, indent=2))
         finally:
             f.close()
