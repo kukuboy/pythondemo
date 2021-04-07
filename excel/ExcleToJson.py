@@ -9,6 +9,7 @@ import json  # 转换为json
 
 
 def main():
+    # name = r"D:\file\wechat\WeChat Files\wxid_k2bas56p2sbz21\FileStorage\File\2021-04\中奖名单公示链接"
     name = "中奖名单公示链接"
     end = "xlsx"
     val = dict()
