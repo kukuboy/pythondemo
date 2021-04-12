@@ -20,4 +20,18 @@ p3.astype(float)
 # print(p3)
 
 # 可通过索引或位置取值
-print(p2[0], p2["name"], p2[0:2], p2[["age", "sex"]])
+# print(p2[0], p2["name"], p2[0:2], p2[["age", "sex"]])
+# 可通过内容筛选取值
+# print(p3[p3 > 2])
+# 满条件的正常显示，不满足条件的换位NAN或者指定值
+# print(p3.where(p3 > 3))
+# print(p3.where(p3 > 3, 111))
+
+# 访问索引相关内容
+for i in p3.index:
+    print(i)
+print(p3.index, type(p3.index))
+# 访问值相关内容
+for i in p3.values:
+    print(i)
+print(p3.values, type(p3.values))
