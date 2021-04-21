@@ -81,9 +81,12 @@ def main():
     for code in code_dict:
         print("正在写入%s的数据" % code)
         for code_data in code_dict[code]:
-            row_index = getRowByCol(code_data[0])
-            worksheet.cell(row=row_index, column=column_index).value = code_data[3]
-            row_index += 1
+            try:
+                row_index = getRowByCol(code_data[0])
+                if row_index > 0:
+                    worksheet.cell(row=row_index, column=column_index).value = code_data[3]
+            except Exception as error_list:
+                print("处理出错，原因为：", error_list, code_data)
         column_index += 1
     # 保存数据
     wordbook.save("天天基金网  数据导出-备份.xlsx")
