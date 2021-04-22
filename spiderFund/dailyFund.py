@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup  # 网页解析获取数据
 
 
 def main():
-    base_url = "https://fundf10.eastmoney.com/F10DataApi.aspx?type=lsjz&sdate=2001-12-18&edate=2020-05-18&per=20"
+    base_url = "https://fundf10.eastmoney.com/F10DataApi.aspx?type=lsjz&sdate=2001-12-18&per=20"
     code_dict = dict()
     # 读取代码
     print("----------开始读取数据----------")
