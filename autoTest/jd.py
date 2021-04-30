@@ -46,7 +46,7 @@ try:
     # 点击购买
     print("点击购买")
     driver.find_element_by_android_uiautomator(
-        'new UiSelector().resourceId("com.jd.lib.productdetail.feature:id/add_2_car")').click()
+        'new UiSelector().resourceId("com.jd.lib.productdetail.feature:id/add_2_car").textContains("立即抢购")').click()
     # 提交订单
     print("提交订单")
     driver.find_element_by_android_uiautomator(
@@ -55,4 +55,5 @@ try:
 except Exception as error:
     print("错误是", error)
 finally:
-    driver.quit()
+    if driver:
+        driver.quit()
