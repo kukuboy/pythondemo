@@ -3,7 +3,13 @@
 # @Author : 水印红枫
 # @Software: PyCharm
 
-# print("hello,world")
+# print("hello world")
+a = input("请输入第一个值：")
+b = input("请输入第二个值：")
+c = int(a) + int(b)
+d = c * c
+print("%s与%s相加等于：%d" % (a, b, c))
+print("%d与%d相乘等于:%d" % (c, c, d))
 # print("这种标准化输出")
 # age = 10
 # print("这是变量：", age)
@@ -156,13 +162,13 @@ print(type(tup1),type(tup2),type(tup3))
 # # os.rename("text.txt", "aText.text")
 # os.rename("aText.text", "text.txt")
 
-try:
-    print("------------1-----------")
-    f = open("123.txt", "r")
-    print("------------2-----------")
-# except Exception as result: #所有异常
-except (IOError, NameError) as result:
-    print("产生错误了", result)
-    pass
-finally:
-    print("这句还是会执行")
+# try:
+#     print("------------1-----------")
+#     f = open("123.txt", "r")
+#     print("------------2-----------")
+# # except Exception as result: #所有异常
+# except (IOError, NameError) as result:
+#     print("产生错误了", result)
+#     pass
+# finally:
+#     print("这句还是会执行")
